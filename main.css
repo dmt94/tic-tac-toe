@@ -2,14 +2,19 @@
 
 * {
   margin: 0;
+  font-family: 'Unbounded', cursive;
 }
 
 :root {
+  --board-square-color: rgba(87, 84, 84, 0.513);
+  --board-square-hover: rgba(44, 41, 41, 0.761);
   --player-x-color: rgba(98, 101, 248, 0.609);
   --player-o-color: rgba(252, 223, 37, 0.609);
+  --msg-color: rgba(255, 255, 112, 0.524);
 }
 
 body {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,15 +32,43 @@ header > div {
   background-color: rgba(255, 255, 255, 0.89);
   width: 100vw;
   margin-bottom: 15px;
-  font-family: 'Unbounded', cursive;
   letter-spacing: 2px;
-  padding: 12px;
+  /* padding: 12px; */
 }
 
 header > h1 {
-  font-family: 'Unbounded', cursive;
   font-size: 12vmin;
   color:rgb(192, 171, 255);
+  margin: 20px;
+}
+
+.tac {
+  color:rgba(235, 246, 44, 0.899);
+}
+
+.player-emphasis-x {
+  font-size: 6vmin;
+  font-family: 'Press Start 2P'; 
+  text-shadow: 
+  0 0 5px #fff, 
+  0 0 10px #fff, 
+  0 0 15px var(--player-x-color), 
+  0 0 20px var(--player-x-color), 
+  0 0 25px var(--player-x-color), 
+  0 0 30px var(--player-x-color), 
+  0 0 35px var(--player-x-color);
+}
+.player-emphasis-o {
+  font-size: 6vmin;
+  font-family: 'Press Start 2P'; 
+  text-shadow: 
+  0 0 5px #fff, 
+  0 0 10px #fff, 
+  0 0 15px var(--player-o-color), 
+  0 0 20px var(--player-o-color), 
+  0 0 25px var(--player-o-color), 
+  0 0 30px var(--player-o-color), 
+  0 0 35px var(--player-o-color);
 }
 
 .player-X, .player-O {
@@ -101,15 +134,48 @@ header > h1 {
 }
 
 #reset-btn {
-  border: 1.8px solid white;
+  border: 0.7px solid rgba(255, 255, 255, 0);
   background-color: rgba(255, 255, 255, 0.196);
   padding: 1.2vmin;
-  color: white;
-  border-radius: 8px;
+  color: rgb(255, 247, 247);
+  border-radius: 4px;
   font-size: 3vmin;
 }
 
 #reset-btn:hover {
   cursor: pointer;
-  background-color: rgba(28, 44, 195, 0.564);
+  border: 0.7px solid rgba(255, 246, 178, 0.82);
+  background-color: rgba(35, 35, 37, 0.866);
+  transition: all 100ms linear;
+  text-shadow: 
+  0 0 0px #fff, 
+  0 0 10px #fff, 
+  0 0 2px var(--msg-color), 
+  0 0 20px var(--msg-color), 
+  0 0 15px var(--msg-color), 
+  0 0 50px var(--msg-color), 
+  0 0 25px var(--msg-color);
+}
+
+#game-message {
+  margin: 20px auto;
+  color:rgba(235, 255, 251, 0.978);
+  font-weight: 400;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+}
+
+footer > h4 {
+  color: #fff;
+  text-transform: uppercase;
+  margin: 15px auto;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 628px) {
+  header > h1 {
+    font-size: 50px;
+    text-align: center;
+  }
 }
