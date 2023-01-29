@@ -1,3 +1,22 @@
+window.onload = function() {
+  Particles.init({
+    selector: '.background',
+    maxParticles: 100,
+    connectParticles: false,
+    color: ["#E1FFFB", "#F2FE89", "#4087FB"],
+    sizeVariations: 2,
+    //options
+    responsive: [
+      {
+        breakpoints: 768,
+        options: {
+          // maxParticles: 80,
+        }
+      }
+    ]
+  });
+};
+
 //STATE VARIABLES
 const jsConfetti = new JSConfetti();
 const PLAYERS = {
@@ -151,9 +170,18 @@ function renderControls() {
     resetBtn.style.visibility = "visible";
     //change confetti emojis according to who wins
     // X , O, Tie
-    jsConfetti.addConfetti({
-      emojis: ['⭐️', '🏆', '🥳', '💫', '🎉']
-    })
+      if (winner === 1) {
+        jsConfetti.addConfetti({
+          emojis: ['⭐️', '👾', '❌', '🚀']
+        })
+      } else if (winner === -1) {
+        jsConfetti.addConfetti({
+          emojis: ['🔮', '🪐', '🌕', '🫧']
+      })} else {
+        jsConfetti.addConfetti({
+          emojis: ['🥴', '😐', '🫢'],
+        })
+      }
   } else {
     resetBtn.style.visibility = "hidden";
   }

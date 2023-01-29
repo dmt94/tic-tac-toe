@@ -6,12 +6,27 @@
 }
 
 :root {
-  /* --board-square-color: rgba(87, 84, 84, 0.513); */
   --board-square-color: rgba(161, 152, 152, 0.446);
   --board-square-hover: rgba(44, 41, 41, 0.761);
-  --player-x-color: rgba(98, 101, 248, 0.609);
+  --player-x-color: rgba(87, 74, 236, 0.469);
   --player-o-color: rgba(252, 223, 37, 0.609);
   --msg-color: rgba(255, 255, 112, 0.524);
+
+  --player-x-txtshadow: 0 0 5px #fff, 
+  0 0 10px #fff, 
+  0 0 15px var(--player-x-color), 
+  0 0 10px var(--player-x-color), 
+  0 0 25px var(--player-x-color), 
+  0 0 100px var(--player-x-color), 
+  0 0 35px var(--player-x-color);
+
+  --player-o-txtshadow: 0 0 5px #fff, 
+  0 0 10px #fff, 
+  0 0 15px var(--player-o-color), 
+  0 0 20px var(--player-o-color), 
+  0 0 25px var(--player-o-color), 
+  0 0 30px var(--player-o-color), 
+  0 0 35px var(--player-o-color);
 }
 
 body {
@@ -27,6 +42,7 @@ header {
   flex-direction: column;
   align-items: center;
   align-self: flex-start;
+  z-index: 3;
 }
 
 header > div {
@@ -34,13 +50,15 @@ header > div {
   width: 100vw;
   margin-bottom: 15px;
   letter-spacing: 2px;
-  /* padding: 12px; */
+}
+
+header > div > h3 {
+  margin-left: 1.8vmin;
 }
 
 header > h1 {
   font-size: 12vmin;
   color:rgb(192, 171, 255);
-  margin: 20px;
 }
 
 .tac {
@@ -50,26 +68,12 @@ header > h1 {
 .player-emphasis-x {
   font-size: 6vmin;
   font-family: 'Press Start 2P'; 
-  text-shadow: 
-  0 0 5px #fff, 
-  0 0 10px #fff, 
-  0 0 15px var(--player-x-color), 
-  0 0 20px var(--player-x-color), 
-  0 0 25px var(--player-x-color), 
-  0 0 30px var(--player-x-color), 
-  0 0 35px var(--player-x-color);
+  text-shadow: var(--player-x-txtshadow);
 }
 .player-emphasis-o {
   font-size: 6vmin;
   font-family: 'Press Start 2P'; 
-  text-shadow: 
-  0 0 5px #fff, 
-  0 0 10px #fff, 
-  0 0 15px var(--player-o-color), 
-  0 0 20px var(--player-o-color), 
-  0 0 25px var(--player-o-color), 
-  0 0 30px var(--player-o-color), 
-  0 0 35px var(--player-o-color);
+  text-shadow: var(--player-o-txtshadow);
 }
 
 .player-X, .player-O {
@@ -81,28 +85,15 @@ header > h1 {
 }
 
 .player-X {
-  text-shadow: 
-    0 0 5px #fff, 
-    0 0 10px #fff, 
-    0 0 15px var(--player-x-color), 
-    0 0 20px var(--player-x-color), 
-    0 0 25px var(--player-x-color), 
-    0 0 30px var(--player-x-color), 
-    0 0 35px var(--player-x-color);
+  text-shadow: var(--player-x-txtshadow);
 }
 
 .player-O {
-  text-shadow: 
-    0 0 5px #fff, 
-    0 0 10px #fff, 
-    0 0 15px var(--player-o-color), 
-    0 0 20px var(--player-o-color), 
-    0 0 25px var(--player-o-color), 
-    0 0 30px var(--player-o-color), 
-    0 0 35px var(--player-o-color);
+  text-shadow: var(--player-o-txtshadow);
 }
 
 #board-container {
+  z-index: 2;
   background: linear-gradient(40deg, rgba(32, 16, 213, 0.668) 0%, rgba(65, 65, 69, 0.508) 75%, rgba(211, 201, 245, 0.809) 100%);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -112,6 +103,7 @@ header > h1 {
   border: 2px solid whitesmoke;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin: 3vmin auto;
+  opacity: 0.94;
 }
 
 #board-container > div {
@@ -125,14 +117,16 @@ header > h1 {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(12.3px);
   -webkit-backdrop-filter: blur(12.3px);
-  border: 1px solid rgba(255, 255, 255, 0.961);
+  border: 1.3px solid rgba(255, 255, 255, 0.961);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-
 }
 
 #board-container > div:hover {
-  background-color: rgba(104, 104, 118, 0.769);
   cursor: pointer;
+  box-shadow: rgba(239, 206, 17, 0.4) 0px 0px 0px 2px, rgba(165, 52, 251, 0.65) 0px 4px 6px -1px, rgba(57, 219, 255, 0.08) 0px 1px 0px inset;
+  transform: scale(1.10);
+  z-index: 1;
+  transition: all 100ms linear;
 }
 
 #reset-btn {
@@ -142,7 +136,9 @@ header > h1 {
   color: rgb(255, 247, 247);
   border-radius: 4px;
   font-size: 3vmin;
-  font-family: 'Press Start 2P';;
+  font-family: 'Press Start 2P';
+  z-index: 3;
+  margin: 20px auto;
 }
 
 #reset-btn:hover {
@@ -174,6 +170,15 @@ footer > h4 {
   margin: 15px auto;
   letter-spacing: 3px;
   font-weight: 400;
+}
+
+.background {
+  z-index: -1;
+  position:absolute;
+  display:block;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
 @media screen and (max-width: 628px) {
