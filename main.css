@@ -6,7 +6,8 @@
 }
 
 :root {
-  --board-square-color: rgba(87, 84, 84, 0.513);
+  /* --board-square-color: rgba(87, 84, 84, 0.513); */
+  --board-square-color: rgba(161, 152, 152, 0.446);
   --board-square-hover: rgba(44, 41, 41, 0.761);
   --player-x-color: rgba(98, 101, 248, 0.609);
   --player-o-color: rgba(252, 223, 37, 0.609);
@@ -118,14 +119,15 @@ header > h1 {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(46, 45, 51, 0.81);
   width: 25vmin;
   height: 25vmin;
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(12.3px);
   -webkit-backdrop-filter: blur(12.3px);
   border: 1px solid rgba(255, 255, 255, 0.961);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
 }
 
 #board-container > div:hover {
@@ -136,10 +138,11 @@ header > h1 {
 #reset-btn {
   border: 0.7px solid rgba(255, 255, 255, 0);
   background-color: rgba(255, 255, 255, 0.196);
-  padding: 1.2vmin;
+  padding: 1.9vmin;
   color: rgb(255, 247, 247);
   border-radius: 4px;
   font-size: 3vmin;
+  font-family: 'Press Start 2P';;
 }
 
 #reset-btn:hover {

@@ -1,5 +1,5 @@
 //STATE VARIABLES
-
+const jsConfetti = new JSConfetti();
 const PLAYERS = {
   '0': {
     color: "var(--board-square-color)",
@@ -18,27 +18,26 @@ const PLAYERS = {
 }
 
 const WIN_COMBOS = [
-  [0, 1, 2],
-  [6, 7, 8],
+  [0, 1, 2], //horizontal top
+  [6, 7, 8], //horizontal bottom
 
-  [0, 3, 6],
-  [2, 5, 8],
+  [0, 3, 6], //vertical left
+  [2, 5, 8], //vertical right
 
-  [0, 4, 8],
-  [2, 4, 6],
+  [0, 4, 8], //diagonal (main)
+  [2, 4, 6], //diagonal (anti)
 
-  [3, 4, 5],
+  [3, 4, 5], //
   [1, 4, 7],
 ]
 
 let board;
 let playerTurn;
-//X, O, Tie
+//X(1), O(-1), Tie("T")
 let winner = null;
 
 // CACHED ELEMENTS
 const resetBtn = document.getElementById("reset-btn");
-resetBtn.style.visibility = "visible";
 const boardEl = document.getElementById("board-container");
 const squareChoices = document.querySelectorAll("#board-container > div");
 const squareChoiceEl = [...document.querySelectorAll("#board-container > div")];
@@ -70,9 +69,9 @@ function clearBoard() {
 init();
 function init() {
   board = [
-    null,null,null, //col 0
-    null,null,null, //col 1
-    null,null,null, //col 2
+    null,null,null, //row 0
+    null,null,null, //row 1
+    null,null,null, //row 2
   ];
 
   playerTurn = 1;
@@ -88,16 +87,36 @@ function handleMove(evt) {
   if (boardIdx) return;
   if (winner !== null) return;
 
+  //make mark on board
   board[clickedSquareIdx] = playerTurn;
-  //DOM
+
+  //DOM = create X and O elements to display
   let divSquareEl = document.getElementById(`${clickedSquareIdx}`);
   let createPlayerPiece = document.createElement("h1");
   createPlayerPiece.classList.add(`player-${PLAYERS[playerTurn].name}`);
   createPlayerPiece.innerText = `${PLAYERS[playerTurn].name}`;
   divSquareEl.append(createPlayerPiece);
+  
+  //end of create elements
 
+  winner = checkWinner();
   playerTurn *= -1;
   render();
+}
+
+function checkWinner() {
+  for (let i = 0; i < WIN_COMBOS.length; i++) {
+
+    let indexValsArr = WIN_COMBOS[i];
+    let boardMapVals = board.filter((val, idx) => indexValsArr.includes(idx));
+    let total = boardMapVals.reduce((acc, curr) => acc + curr);
+    let absTotal = Math.abs(total);
+
+    if (absTotal === 3 ) {
+      return total === 3 ? 1 : -1
+    }
+  }
+   return !board.includes(null) ? "T" : null;
 }
 
 // --> RENDER
@@ -130,6 +149,11 @@ function renderMessage() {
 function renderControls() {
   if (winner || !board.includes(null)) {
     resetBtn.style.visibility = "visible";
+    //change confetti emojis according to who wins
+    // X , O, Tie
+    jsConfetti.addConfetti({
+      emojis: ['⭐️', '🏆', '🥳', '💫', '🎉']
+    })
   } else {
     resetBtn.style.visibility = "hidden";
   }
