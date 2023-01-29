@@ -7,26 +7,20 @@
 
 :root {
   --board-square-color: rgba(161, 152, 152, 0.446);
-  --board-square-hover: rgba(44, 41, 41, 0.761);
-  --player-x-color: rgba(87, 74, 236, 0.469);
-  --player-o-color: rgba(252, 223, 37, 0.418);
+  --board-square-hover: rgba(25, 24, 24, 0.761);
+  --player-x-color: rgba(152, 144, 241, 0.821);
+  --player-o-color: rgba(252, 223, 37, 0.58);
   --msg-color: rgba(255, 255, 112, 0.524);
 
   --player-x-txtshadow: 0 0 5px #fff, 
-  0 0 10px #fff, 
-  0 0 15px var(--player-x-color), 
-  0 0 10px var(--player-x-color), 
-  0 0 25px var(--player-x-color), 
-  0 0 10px var(--player-x-color), 
-  0 0 35px var(--player-x-color);
+  0 0 2px #fff, 
+  0 10px 5px var(--player-x-color), 
+  0 0 25px var(--player-x-color);
 
   --player-o-txtshadow: 0 0 5px #fff, 
   0 0 10px #fff, 
-  0 0 15px var(--player-o-color), 
-  0 0 20px var(--player-o-color), 
-  0 0 25px var(--player-o-color), 
-  0 0 10px var(--player-o-color), 
-  0 0 35px var(--player-o-color);
+  0 0 25px var(--player-o-color),
+  0 0 25px var(--player-o-color);
 }
 
 body {
@@ -34,7 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(33, 33, 35);
+  background-color: rgb(18, 18, 19);
 }
 
 header {
