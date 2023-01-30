@@ -1,7 +1,7 @@
 window.onload = function() {
   Particles.init({
     selector: '.background',
-    maxParticles: 200,
+    maxParticles: 400,
     connectParticles: false,
     color: ["#E1FFFB", "#F2FE89", "#4087FB"],
     sizeVariations: 2,
@@ -55,6 +55,7 @@ let playerTurn;
 //X(1), O(-1), Tie("T")
 let winner = null;
 let winningComboIndice;
+let isMusicOn = false;
 
 // CACHED ELEMENTS
 const resetBtn = document.getElementById("reset-btn");
@@ -62,6 +63,7 @@ const boardEl = document.getElementById("board-container");
 const squareChoices = document.querySelectorAll("#board-container > div");
 const squareChoiceEl = [...document.querySelectorAll("#board-container > div")];
 const messageEl = document.getElementById("game-message");
+const bottomArtText = document.getElementById("circle");
 
 // EVENT LISTENERS
 boardEl.addEventListener("click", handleMove);
@@ -86,6 +88,7 @@ function clearBoard() {
 
 // --> INITIALIZE
 init();
+play();
 function init() {
   board = [
     null,null,null, //row 0
@@ -106,6 +109,7 @@ function init() {
 
 //handles data change / interaction of click event
 function handleMove(evt) {
+  onClickSound();  
   let clickedSquareIdx = squareChoiceEl.indexOf(evt.target);
   let boardIdx = board[clickedSquareIdx];
 
@@ -178,12 +182,13 @@ function renderMessage() {
   } else {
     //Game is still in process
     messageEl.innerHTML = `<span class="${currentPlayer.emphasis}" style="color: ${currentPlayer.color}">${currentPlayer.name.toUpperCase()}</span>'s turn`;
+    bottomArtText.innerText = `${currentPlayer.name}`
   }
 }
 
 function renderControls() {
   if (winner || !board.includes(null)) {
-
+    onEndGameSound();
     resetBtn.style.visibility = "visible";
     triggerWinAnimation(winner);
 
@@ -244,3 +249,32 @@ function pushWinningSquares(winningCombo) {
     square.style.backgroundColor = "var(--board-square-hover)";
   })
 } 
+
+function play() {
+  const audio2 = document.getElementById("music-btn");
+  const audio = new Audio("./music/music_zapsplat_game_music_arcade_electro_repeating_retro_arp_electro_drums_serious_012.mp3");
+  audio2.addEventListener("click", () => {
+    if (isMusicOn) {
+      isMusicOn = false;
+      audio2.innerText = "Play Tunes"
+      audio.pause();
+  
+    } else {
+      audio2.innerText = "Stop Music!"
+      isMusicOn = true;
+      audio.play();
+    }
+  })
+
+}
+
+function onClickSound() {
+  const audio = new Audio("./music/esm_5_wickets_sound_fx_arcade_casino_kids_mobile_app.mp3");
+  audio.playbackRate = 1;
+  audio.play();
+}
+
+function onEndGameSound() {
+  const endGameAudio = new Audio("./music/esm_8_bit_small_win_arcade_80s_simple_alert_notification_game.mp3");
+  endGameAudio.play();
+}

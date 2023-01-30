@@ -105,6 +105,7 @@ header > h1 {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin: 3vmin auto;
   opacity: 0.94;
+  filter: blur(0.65px);
 }
 
 #board-container > div {
@@ -200,7 +201,9 @@ header > h1 {
   animation: bg-change3 0.92s linear infinite;
 }
 
-#reset-btn {
+
+
+#reset-btn, #music-btn {
   border: 0.7px solid rgba(255, 255, 255, 0);
   background-color: rgba(255, 255, 255, 0.196);
   padding: 1.9vmin;
@@ -210,6 +213,15 @@ header > h1 {
   font-family: 'Press Start 2P';
   z-index: 3;
   margin: 20px auto;
+}
+
+#music-btn {
+  background-color: #746bee53;
+  color:rgb(255, 244, 244);
+}
+#music-btn:hover {
+  cursor: pointer;
+  background-color: #6829dc53;
 }
 
 #reset-btn:hover {
@@ -243,12 +255,58 @@ footer > h4 {
   font-weight: 400;
 }
 
+/* art */
+
 .background {
   position:absolute;
   display:block;
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+@keyframes float {
+  0% {
+    transform: 
+      rotate(0deg) 
+      translateY(20px) 
+      rotate(0);
+}
+  100% {
+      transform: 
+        rotate(360deg) 
+        translateY(20px) 
+        rotate(-360deg);
+}
+}
+
+#bottom-art {
+  position: relative;
+  top: -11vmin;
+  animation: float 3s infinite linear;
+}
+
+#circle-bottom {
+  width: 20vmin;
+  height: 20vmin;
+  background: linear-gradient(45deg, rgba(224, 222, 195, 0.565) 0 70%, #d9c6eedb 50% 100%);
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+#circle {
+  font-size: 10vmin;
+  color: #f6ebeb81;
+  position: relative;
+  top:-14.6vmin;
+  right:-5.8vmin;
+  font-family: 'Press Start 2P'; 
+  filter: blur(1px);
+}
+
+img {
+  width: 14vmin;
+  cursor:pointer;
 }
 
 @media screen and (max-width: 628px) {
