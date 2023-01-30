@@ -1,7 +1,7 @@
 window.onload = function() {
   Particles.init({
     selector: '.background',
-    maxParticles: 100,
+    maxParticles: 200,
     connectParticles: false,
     color: ["#E1FFFB", "#F2FE89", "#4087FB"],
     sizeVariations: 2,
@@ -46,7 +46,7 @@ const WIN_COMBOS = [
   [0, 4, 8], //diagonal (main)
   [2, 4, 6], //diagonal (anti)
 
-  [3, 4, 5], //
+  [3, 4, 5], 
   [1, 4, 7],
 ]
 
@@ -54,6 +54,7 @@ let board;
 let playerTurn;
 //X(1), O(-1), Tie("T")
 let winner = null;
+let winningComboIndice;
 
 // CACHED ELEMENTS
 const resetBtn = document.getElementById("reset-btn");
@@ -63,10 +64,6 @@ const squareChoiceEl = [...document.querySelectorAll("#board-container > div")];
 const messageEl = document.getElementById("game-message");
 
 // EVENT LISTENERS
-squareChoices.forEach((choice) => {
-  choice.addEventListener("mouseenter", onHover);
-  choice.addEventListener("mouseleave", triggerDarkBg);
-})
 boardEl.addEventListener("click", handleMove);
 resetBtn.addEventListener("click", clearBoard);
 
@@ -80,7 +77,10 @@ function triggerDarkBg(e) {
 }
 
 function clearBoard() {
-  squareChoices.forEach(square => square.textContent = "")
+  squareChoices.forEach(square => {
+    square.textContent = "";
+    square.className = "";
+  })
   init();
 }
 
@@ -95,6 +95,12 @@ function init() {
 
   playerTurn = 1;
   winner = null;
+
+  squareChoices.forEach((choice) => {
+    choice.addEventListener("mouseenter", onHover);
+    choice.addEventListener("mouseleave", triggerDarkBg);
+  })
+
   render();
 };
 
@@ -127,11 +133,21 @@ function checkWinner() {
   for (let i = 0; i < WIN_COMBOS.length; i++) {
 
     let indexValsArr = WIN_COMBOS[i];
-    let boardMapVals = board.filter((val, idx) => indexValsArr.includes(idx));
+    let boardMapVals = [];
+    let boardMapValsIndex = [];
+    board.forEach((val, indx) => {
+      if (indexValsArr.includes(indx)) {
+        boardMapVals.push(val);
+        boardMapValsIndex.push(indx);
+      }
+    })
+
     let total = boardMapVals.reduce((acc, curr) => acc + curr);
     let absTotal = Math.abs(total);
 
     if (absTotal === 3 ) {
+      //update winning combo array
+      winningComboIndice = boardMapValsIndex;
       return total === 3 ? 1 : -1
     }
   }
@@ -167,22 +183,64 @@ function renderMessage() {
 
 function renderControls() {
   if (winner || !board.includes(null)) {
+
     resetBtn.style.visibility = "visible";
-    //change confetti emojis according to who wins
-    // X , O, Tie
-      if (winner === 1) {
-        jsConfetti.addConfetti({
-          emojis: ['⭐️', '👾', '❌', '🚀']
-        })
-      } else if (winner === -1) {
-        jsConfetti.addConfetti({
-          emojis: ['🔮', '🪐', '🌕', '🫧']
-      })} else {
-        jsConfetti.addConfetti({
-          emojis: ['🥴', '😐', '🫢'],
-        })
-      }
+    triggerWinAnimation(winner);
+
   } else {
+    //continue game
     resetBtn.style.visibility = "hidden";
   }
 }
+// End of game functions
+function triggerWinAnimation(winningPlayer) {
+  throwEmoji(winningPlayer, 180);
+  if (winner !== 'T') {
+    pushWinningSquares(winningComboIndice);
+  }
+}
+
+function throwEmoji(winningPlayer, size) {
+  if (winningPlayer === 1) {
+    jsConfetti.addConfetti({
+      emojis: ['⭐️', '👾', '❌', '🚀'],
+      emojiSize: size
+    })
+  } else if (winningPlayer === -1) {
+    jsConfetti.addConfetti({
+      emojis: ['🔮', '🪐', '🌕', '🫧'],
+      emojiSize: size
+  })} else if ((winningPlayer === "T")) {
+    jsConfetti.addConfetti({
+      emojis: ['🥴', '😐', '🫢'],
+      emojiSize: size
+    })
+  }
+} 
+
+function pushWinningSquares(winningCombo) {
+  //map index values stored as an element in winning combo
+  //(cont...) to the div squares index
+  //refer to squareChoiceEl
+  squareChoices.forEach((choice) => {
+    choice.removeEventListener("mouseenter", onHover);
+    choice.removeEventListener("mouseleave", triggerDarkBg);
+  })
+
+  let winningDivs = squareChoiceEl.filter((square, idx) => 
+  winningCombo.includes(idx));
+
+  let nonWinningDivs = squareChoiceEl.filter((square, idx) => !winningCombo.includes(idx));
+
+  let firstWinSquare = winningDivs[0];
+  let secondWinSquare = winningDivs[1];
+  let thirdWinSquare = winningDivs[2];
+
+  firstWinSquare.classList.add("animation-1");
+  secondWinSquare.classList.add("animation-2");
+  thirdWinSquare.classList.add("animation-3");
+  
+  nonWinningDivs.forEach((square, idx) => {
+    square.style.backgroundColor = "var(--board-square-hover)";
+  })
+} 

@@ -6,7 +6,7 @@
 }
 
 :root {
-  --board-square-color: rgba(161, 152, 152, 0.446);
+  --board-square-color: rgba(158, 129, 25, 0.342);
   --board-square-hover: rgba(25, 24, 24, 0.761);
   --player-x-color: rgba(152, 144, 241, 0.821);
   --player-o-color: rgba(252, 223, 37, 0.58);
@@ -21,6 +21,8 @@
   0 0 10px #fff, 
   0 0 25px var(--player-o-color),
   0 0 25px var(--player-o-color);
+
+  --test-bg: rgba(31, 31, 29, 0.955);
 }
 
 body {
@@ -76,14 +78,19 @@ header > h1 {
   color: rgb(255, 244, 244);
   position: relative;
   left: 1vmin;
+
 }
 
 .player-X {
   text-shadow: var(--player-x-txtshadow);
+  animation: shakeX;
+  animation-duration: 2s;
 }
 
 .player-O {
   text-shadow: var(--player-o-txtshadow);
+  animation: shakeY;
+  animation-duration: 2s;
 }
 
 #board-container {
@@ -92,9 +99,9 @@ header > h1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  border-radius: 14px;
+  border-radius: 10px;
   padding: 3px;
-  border: 2px solid whitesmoke;
+  border: 2.7px solid whitesmoke;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin: 3vmin auto;
   opacity: 0.94;
@@ -121,6 +128,76 @@ header > h1 {
   transform: scale(1.10);
   z-index: 1;
   transition: all 100ms linear;
+}
+
+/* class added to winning DIVs, with animation */
+
+/* first winning square */
+@keyframes bg-change1 {
+  0% { 
+    background: #d4632e2a; 
+  }
+  25% { 
+    background: #f4dd0e56; 
+  }
+  50% { 
+    background: #e3f95236; 
+  }
+  75% { 
+    background: #e2bd0758; 
+  }
+  100% { 
+    background: #f36e082c;
+  }
+}
+.animation-1 {
+  animation: bg-change1 0.92s linear infinite;
+}
+
+/* second winning square */
+@keyframes bg-change2 {
+  0% { 
+    background: #2e41d456; 
+  }
+  25% { 
+    background: #530ef41b; 
+  }
+  50% { 
+    background: #46425273; 
+  }
+  75% { 
+    background: #e5eb4336; 
+  }
+  100% { 
+    background: #2323242b; 
+  }
+}
+
+.animation-2 {
+  animation: bg-change2 0.92s linear infinite;
+}
+
+/* third winning square */
+@keyframes bg-change3 {
+  0% { 
+    background: #28672856; 
+  }
+  25% { 
+    background: #5e5c3456; 
+  }
+  50% {
+     background: #36726c73;
+    }
+  75% {
+     background: #b4ad5d63; 
+    }
+  100% {
+     background: #1db3ee2b; 
+    }
+}
+
+.animation-3 {
+  animation: bg-change3 0.92s linear infinite;
 }
 
 #reset-btn {
@@ -167,7 +244,6 @@ footer > h4 {
 }
 
 .background {
-  z-index: -1;
   position:absolute;
   display:block;
   top: 0;
