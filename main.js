@@ -91,7 +91,6 @@ playMusic();
 
 function init() {
   setDisplayGameType("on");
-  setDisplayChoosePiece("on");
   initialGameType();
 };
 
@@ -102,13 +101,11 @@ function initialGameType() {
   passPlayBtn.addEventListener("click", () => {
     chosenGame = "passPlayGame";
     setDisplayGameType("off");
-    setDisplayChoosePiece("on");
     triggerPassPlayGame();
   })
   computerPlayBtn.addEventListener("click", () => {
     chosenGame = "computerGame";;
     setDisplayGameType("off");
-    setDisplayChoosePiece("on");
     renderBoard();
     triggerComputerGame();
     resetBtn.style.visibility = "hidden";
@@ -122,15 +119,6 @@ function setDisplayGameType(onOrOff) {
   } else {
     gameTypePopup.style.display = "none";
     overlayBg.style.display = "none";
-  }
-}
-
-function setDisplayChoosePiece(onOrOff) {
-  let chooseXOPopup = document.getElementById("pick-XO-div");
-  if (onOrOff === "on") {
-    chooseXOPopup.style.display = "flex";
-  } else {
-    chooseXOPopup.style.display = "none";
   }
 }
 
