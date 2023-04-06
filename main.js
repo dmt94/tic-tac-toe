@@ -5,20 +5,13 @@ window.onload = function() {
     connectParticles: false,
     color: ["#E1FFFB", "#F2FE89", "#4087FB"],
     sizeVariations: 2,
-    //options
-    responsive: [
-      {
-        breakpoints: 768,
-        options: {
-          // maxParticles: 80,
-        }
-      }
-    ]
   });
 };
 
 //STATE VARIABLES
 const jsConfetti = new JSConfetti();
+const COMPUTER_GAME = "computerGame";
+const PASS_N_PLAY_GAME = "passPlayGame";
 const PLAYERS = {
   '0': {
     color: "var(--board-square-color)",
@@ -50,6 +43,9 @@ const WIN_COMBOS = [
   [1, 4, 7],
 ]
 
+let chosenGame;
+let chosenPiece;
+let computerPiece;
 let board;
 let playerTurn;
 //X(1), O(-1), Tie("T")
@@ -58,6 +54,8 @@ let winningComboIndice;
 let isMusicOn = false;
 
 // CACHED ELEMENTS
+const overlayBg = document.getElementById("overlay");
+const gameTypePopup = document.getElementById("pick-player-div");
 const resetBtn = document.getElementById("reset-btn");
 const boardEl = document.getElementById("board-container");
 const squareChoices = document.querySelectorAll("#board-container > div");
@@ -65,8 +63,9 @@ const squareChoiceEl = [...document.querySelectorAll("#board-container > div")];
 const messageEl = document.getElementById("game-message");
 const bottomArtText = document.getElementById("circle");
 
+resetBtn.style.visibility = "hidden";
+
 // EVENT LISTENERS
-boardEl.addEventListener("click", handleMove);
 resetBtn.addEventListener("click", clearBoard);
 
 
@@ -88,54 +87,151 @@ function clearBoard() {
 
 // --> INITIALIZE
 init();
-play();
+playMusic();
+
 function init() {
+  setDisplayGameType("on");
+  setDisplayChoosePiece("on");
+  initialGameType();
+};
+
+function initialGameType() {
+  let passPlayBtn = document.getElementById("passnplay-btn");
+  let computerPlayBtn = document.getElementById("vs-computer-btn");
+
+  passPlayBtn.addEventListener("click", () => {
+    chosenGame = "passPlayGame";
+    setDisplayGameType("off");
+    setDisplayChoosePiece("on");
+    triggerPassPlayGame();
+  })
+  computerPlayBtn.addEventListener("click", () => {
+    chosenGame = "computerGame";;
+    setDisplayGameType("off");
+    setDisplayChoosePiece("on");
+    renderBoard();
+    triggerComputerGame();
+    resetBtn.style.visibility = "hidden";
+  })
+}
+
+function setDisplayGameType(onOrOff) {
+  if (onOrOff === "on") {
+    gameTypePopup.style.display = "flex";
+    overlayBg.style.display = "block";
+  } else {
+    gameTypePopup.style.display = "none";
+    overlayBg.style.display = "none";
+  }
+}
+
+function setDisplayChoosePiece(onOrOff) {
+  let chooseXOPopup = document.getElementById("pick-XO-div");
+  if (onOrOff === "on") {
+    chooseXOPopup.style.display = "flex";
+  } else {
+    chooseXOPopup.style.display = "none";
+  }
+}
+
+function setFirstPlayer() {
+  let pickX = document.getElementById("usr-pick-x");
+  let pickO = document.getElementById("usr-pick-o");
+  pickX.addEventListener("click", xPlayerFirst);
+  pickO.addEventListener("click", oPlayerFirst);
+}  
+
+function xPlayerFirst() {
+  chosenPiece = 1;
+  playerTurn = 1;
+}
+function oPlayerFirst() {
+  chosenPiece = -1;
+  playerTurn = -1;
+}
+
+function clearBoardGame() {
+  squareChoices.forEach(square => {
+    square.textContent = "";
+    square.className = "";
+  })
   board = [
     null,null,null, //row 0
     null,null,null, //row 1
     null,null,null, //row 2
   ];
-
   playerTurn = 1;
   winner = null;
-
+  messageEl.textContent = "";
+}
+// CURRENTLY WORKING ON
+function triggerNewGame() {
+  clearBoardGame();
+  renderBoard();
   squareChoices.forEach((choice) => {
     choice.addEventListener("mouseenter", onHover);
     choice.addEventListener("mouseleave", triggerDarkBg);
   })
+  boardEl.addEventListener("click", handleGameType);
+}
 
-  render();
-};
+//triggerCompGame
+function triggerComputerGame() {
+  triggerNewGame();
+}
+
+//passPlayGame
+function triggerPassPlayGame() {
+  triggerNewGame();
+}
 
 //handles data change / interaction of click event
-function handleMove(evt) {
-  onClickSound();  
+function handleGameType(evt) {
+  if (chosenGame === PASS_N_PLAY_GAME) {
+    passPlayGameRender(evt);
+  } else {
+    passComputerGameRender(evt);
+  }
+}
+
+function passComputerGameRender(evt) {
   let clickedSquareIdx = squareChoiceEl.indexOf(evt.target);
   let boardIdx = board[clickedSquareIdx];
-
   if (boardIdx) return;
   if (winner !== null) return;
+  console.log("helloo", winner);
+}
 
+function passPlayGameRender(evt) {
+  let clickedSquareIdx = squareChoiceEl.indexOf(evt.target);
+  let boardIdx = board[clickedSquareIdx];
+  if (boardIdx) return;
+  if (winner !== null) return;
+  onClickSound();  
   //make mark on board
   board[clickedSquareIdx] = playerTurn;
-
-  //DOM = create X and O elements to display
-  let divSquareEl = document.getElementById(`${clickedSquareIdx}`);
-  let createPlayerPiece = document.createElement("h1");
-  createPlayerPiece.classList.add(`player-${PLAYERS[playerTurn].name}`);
-  createPlayerPiece.innerText = `${PLAYERS[playerTurn].name}`;
-  divSquareEl.append(createPlayerPiece);
-  
-  //end of create elements
-
+  createMoves(playerTurn, clickedSquareIdx);
   winner = checkWinner();
   playerTurn *= -1;
   render();
 }
 
+function chooseMove(playerTurn) {
+
+}
+
+function createMoves(playerTurn, indexOfSquareEl) {
+  //DOM = create X and O elements to display
+  let divSquareEl = document.getElementById(`${indexOfSquareEl}`);
+  let createPlayerPiece = document.createElement("h1");
+  createPlayerPiece.classList.add(`player-${PLAYERS[playerTurn].name}`);
+  createPlayerPiece.innerText = `${PLAYERS[playerTurn].name}`;
+  divSquareEl.append(createPlayerPiece);
+  //end of create elements
+}
+
 function checkWinner() {
   for (let i = 0; i < WIN_COMBOS.length; i++) {
-
     let indexValsArr = WIN_COMBOS[i];
     let boardMapVals = [];
     let boardMapValsIndex = [];
@@ -145,10 +241,8 @@ function checkWinner() {
         boardMapValsIndex.push(indx);
       }
     })
-
     let total = boardMapVals.reduce((acc, curr) => acc + curr);
     let absTotal = Math.abs(total);
-
     if (absTotal === 3 ) {
       //update winning combo array
       winningComboIndice = boardMapValsIndex;
@@ -191,7 +285,6 @@ function renderControls() {
     onEndGameSound();
     resetBtn.style.visibility = "visible";
     triggerWinAnimation(winner);
-
   } else {
     //continue game
     resetBtn.style.visibility = "hidden";
@@ -199,7 +292,7 @@ function renderControls() {
 }
 // End of game functions
 function triggerWinAnimation(winningPlayer) {
-  throwEmoji(winningPlayer, 180);
+  throwEmoji(winningPlayer, 120);
   if (winner !== 'T') {
     pushWinningSquares(winningComboIndice);
   }
@@ -231,26 +324,18 @@ function pushWinningSquares(winningCombo) {
     choice.removeEventListener("mouseenter", onHover);
     choice.removeEventListener("mouseleave", triggerDarkBg);
   })
-
   let winningDivs = squareChoiceEl.filter((square, idx) => 
   winningCombo.includes(idx));
-
   let nonWinningDivs = squareChoiceEl.filter((square, idx) => !winningCombo.includes(idx));
-
-  let firstWinSquare = winningDivs[0];
-  let secondWinSquare = winningDivs[1];
-  let thirdWinSquare = winningDivs[2];
-
-  firstWinSquare.classList.add("animation-1");
-  secondWinSquare.classList.add("animation-2");
-  thirdWinSquare.classList.add("animation-3");
-  
+  winningDivs.forEach((winningDiv, idx) => {
+    winningDiv.classList.add(`animation-${idx + 1}`);
+  })
   nonWinningDivs.forEach((square, idx) => {
     square.style.backgroundColor = "var(--board-square-hover)";
   })
 } 
 
-function play() {
+function playMusic() {
   const audio2 = document.getElementById("music-btn");
   const audio = new Audio("./music/music_zapsplat_game_music_arcade_electro_repeating_retro_arp_electro_drums_serious_012.mp3");
   audio2.addEventListener("click", () => {

@@ -22,11 +22,20 @@
   0 0 25px var(--player-o-color),
   0 0 25px var(--player-o-color);
 
-  --test-bg: rgba(31, 31, 29, 0.955);
+  
+}
+
+#overlay {
+  width: 100%;
+  height: 100%;
+  background-color: #1c1d1cc3;
+  z-index: 3;
+  position: fixed;
+  display: block;
 }
 
 body {
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +87,6 @@ header > h1 {
   color: rgb(255, 244, 244);
   position: relative;
   left: 1vmin;
-
 }
 
 .player-X {
@@ -91,6 +99,112 @@ header > h1 {
   text-shadow: var(--player-o-txtshadow);
   animation: shakeY;
   animation-duration: 2s;
+}
+
+#pick-player-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 50vmin;
+  height: 60vmin;
+  background-color: #7971adce;
+  border: 0.7px solid rgb(255, 255, 223);
+  border-radius: 2vmin;
+  position: absolute;
+  z-index: 4;
+  top: 39vmin;
+  box-shadow: rgba(228, 215, 215, 0.585) 0px 2px 8px 0px;
+  backdrop-filter: blur(2px);
+}
+
+#passnplay-btn,
+#vs-computer-btn {
+  background-color: #d6d4b198;
+  padding: 2vmin;
+  border-radius: 6px;
+  border: 1px solid rgba(242, 236, 184, 0.683);
+  color: #272424fa;
+  font-family: 'Press Start 2P'; 
+  width: 70%;
+}
+
+#passnplay-btn:hover,
+#vs-computer-btn:hover {
+  cursor: pointer;
+  transform: translate(0, 4px);
+  transition: all 200ms linear;
+}
+
+#passnplay-btn:hover {
+  background-color: #8e6be095;
+  color: whitesmoke;
+  box-shadow:
+  rgba(240, 46, 170, 0.4) 0px 5px,
+  rgba(240, 46, 170, 0.3) 0px 10px, 
+  rgba(240, 46, 170, 0.2) 0px 15px,
+  rgba(240, 46, 170, 0.1) 0px 20px,
+ rgba(240, 46, 170, 0.05) 0px 25px;
+}
+
+#vs-computer-btn:hover {
+  background-color: #16161595;
+  color: whitesmoke;
+  box-shadow:
+  rgba(51, 192, 253, 0.529) 0px 5px,
+  rgba(129, 234, 250, 0.365) 0px 10px, 
+  rgba(78, 177, 162, 0.2) 0px 15px,
+  rgba(45, 67, 95, 0.188) 0px 20px,
+ rgba(61, 53, 93, 0.05) 0px 25px;
+}
+
+#pick-player-div h3 {
+  color:rgb(255, 244, 244);
+  font-size: 5vmin;
+  text-align: center;
+}
+
+/* PICK X OR O */
+#pick-XO-div {
+  z-index: 6;
+  background-color: #2a2b29e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1vmin;
+  box-shadow: rgba(113, 117, 126, 0.483) 0px 5px 15px 0px;
+  position: relative;
+}
+
+#pick-piece-indicator {
+  margin: 2vmin;
+  color: white;
+}
+
+#pick-XO-div button {
+  margin: 2vmin;
+  padding: 5vmin;
+  border: none;
+  border: 2px solid rgba(255, 246, 188, 0.821);
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+#pick-XO-div button:hover {
+  background-color: #364196e6;
+  cursor: pointer;
+  box-shadow: rgba(106, 98, 247, 0.661) -5px 5px, rgba(62, 46, 240, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px, rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+}
+
+#usr-pick-x {
+  background: #2e226bd6;
+}
+#pick-XO-div #usr-pick-o {
+  background: #75704bda;
+}
+
+#pick-XO-div #usr-pick-o:hover {
+  background: #3b3a37da;
+  box-shadow: rgba(251, 255, 43, 0.773) 5px 5px, rgba(243, 215, 36, 0.3) 10px 10px, rgba(241, 249, 25, 0.2) 15px 15px, rgba(240, 230, 46, 0.178) 20px 20px, rgba(230, 224, 36, 0.05) 25px 25px;
 }
 
 #board-container {
@@ -158,24 +272,18 @@ header > h1 {
 /* second winning square */
 @keyframes bg-change2 {
   0% { 
-    background: #2e41d456; 
+    background: #def7395a; 
   }
-  25% { 
-    background: #530ef41b; 
-  }
-  50% { 
-    background: #46425273; 
-  }
-  75% { 
-    background: #e5eb4336; 
+  50% {
+    background: #704ef72b; 
   }
   100% { 
-    background: #2323242b; 
+    background: #d24ef72b; 
   }
 }
 
 .animation-2 {
-  animation: bg-change2 0.92s linear infinite;
+  animation: bg-change2 1.2s ease-in infinite;
 }
 
 /* third winning square */
@@ -200,8 +308,6 @@ header > h1 {
 .animation-3 {
   animation: bg-change3 0.92s linear infinite;
 }
-
-
 
 #reset-btn, #music-btn {
   border: 0.7px solid rgba(255, 255, 255, 0);
