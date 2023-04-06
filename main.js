@@ -103,13 +103,6 @@ function initialGameType() {
     setDisplayGameType("off");
     triggerPassPlayGame();
   })
-  computerPlayBtn.addEventListener("click", () => {
-    chosenGame = "computerGame";;
-    setDisplayGameType("off");
-    renderBoard();
-    triggerComputerGame();
-    resetBtn.style.visibility = "hidden";
-  })
 }
 
 function setDisplayGameType(onOrOff) {
@@ -202,10 +195,6 @@ function passPlayGameRender(evt) {
   winner = checkWinner();
   playerTurn *= -1;
   render();
-}
-
-function chooseMove(playerTurn) {
-
 }
 
 function createMoves(playerTurn, indexOfSquareEl) {
